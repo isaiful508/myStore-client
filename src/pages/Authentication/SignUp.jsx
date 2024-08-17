@@ -1,103 +1,72 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
-import { auth } from "../../firebase/firebase";
-import baseUrl from "../../hooks/useBaseUrl";
-import axios from "axios";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../providers/AuthProviders";
 import toast from "react-hot-toast";
+import { updateProfile } from "firebase/auth";
+
 const SignUp = () => {
-  const [loading, setLoading] = useState(false);
+
+ const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const { setUser } = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
+  const { createUser, signOut, loginWithGoogle } = useContext(AuthContext);
+
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
 
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const photo = e.target.photUrl.files[0];
+    const photo = e.target.photo.value;
+    console.log(name, email, photo, password);
 
-    try {
-      const res = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
-        { image: photo },
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      const url = await res.data.data.url;
+  
+    createUser(email, password)
+      .then((result) => {
+        // console.log(result.user)
+        toast.success('Registration Successfully');
+        signOut();
+        navigate("/login");
 
-      const userCredentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
 
-      await updateProfile(auth.currentUser, {
-        displayName: name,
-        photoURL: url,
-      });
-      const { data } = await baseUrl.post("/signup", {
-        name,
-        email,
-        photoUrl: url,
-      });
-      console.log(data);
-      localStorage.setItem("token", data.token);
+        //update profile
 
-      setUser({
-        name: userCredentials?.user?.displayName,
-        email: userCredentials?.user?.email,
-        uid: userCredentials?.user?.uid,
-        photoUrl: userCredentials?.user?.photoURL,
-        role: "user",
-      });
+        updateProfile(result.user, {
+          displayName: name,
+          photoURL: photo
 
-      setLoading(false);
-      navigate(from, { replace: true });
-    } catch (error) {
-      setLoading(false);
-      toast.error(error.message);
-      console.log(error);
-    }
+        })
+          .then(() =>{
+            
+          } )
+          .catch()
+
+
+      })
+      .catch(error => {
+        console.error(error)
+
+      })
+
+
   };
 
   const handleGoogleLogin = async (e) => {
-    e.preventDefault();
+    loginWithGoogle()
+    .then((result) => {
+        const googleUser = result.user
+        setUser(googleUser);
+console.log(user);
+        toast.success("Login Successfully")
 
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = await result.user;
-      const { data } = await baseUrl.post("/signup", {
-        name: user.displayName,
-        email: user.email,
-        photoUrl: user.photoURL,
-      });
-      localStorage.setItem("token", data.token);
-      setUser({
-        name: user.displayName,
-        email: user.email,
-        uid: user.uid,
-        photoUrl: user.photoURL,
-        role: "user",
-      });
-      navigate(from, { replace: true });
-    } catch (error) {
-      toast.error(error.message);
-      console.log(error.message);
-    }
+        navigate(location?.state ? location.state : '/');
+      
+
+    })
+    .catch(error => console.error(error))
   };
   return (
     <div className="flex items-center justify-center w-full h-screen">
@@ -108,7 +77,7 @@ const SignUp = () => {
             Sign up to access your account
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-12">
+        <form onSubmit={handleSignUp} className="space-y-12">
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block mb-2 text-sm">
@@ -119,7 +88,7 @@ const SignUp = () => {
                 name="name"
                 id="name"
                 required
-                placeholder="Tajbir islam"
+                placeholder="Saiful islam"
                 className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800"
               />
             </div>
@@ -152,34 +121,30 @@ const SignUp = () => {
             </div>
             <div>
               <label
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                htmlFor="file_input"
+                className="block mb-2 text-sm"
+                htmlFor="photo"
               >
-                Upload Photo
+                Photo URL
               </label>
               <input
-                required
-                className="block w-full text-lg cursor-pointer bg-gray-50 focus:outline-none"
-                id="photUrl"
-                name="photUrl"
-                type="file"
+                id='photo'
+                autoComplete='photo'
+                name='photo'
+                className='w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800'
+                type='text'
               />
             </div>
           </div>
           <div className="space-y-2">
             <div>
-              {loading ? (
-                <div className="w-full px-8 py-3 font-semibold rounded-md dark:bg-violet-600 dark:text-gray-50">
-                  <div className="w-6 h-6 m-auto border-4 border-dashed rounded-full animate-spin dark:border-white"></div>
-                </div>
-              ) : (
+             
                 <button
                   type="submit"
                   className="w-full px-8 py-3 font-semibold rounded-md dark:bg-violet-600 dark:text-gray-50"
                 >
                   Sign Up
                 </button>
-              )}
+              
             </div>
             <div className="my-6 space-y-4">
               <button
