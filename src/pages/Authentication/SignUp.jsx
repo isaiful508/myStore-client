@@ -9,7 +9,7 @@ import { auth } from "../../firebase/firebase";
 import baseUrl from "../../hooks/useBaseUrl";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../providers/AuthProvider";
+import { AuthContext } from "../../providers/AuthProviders";
 import toast from "react-hot-toast";
 const SignUp = () => {
   const [loading, setLoading] = useState(false);

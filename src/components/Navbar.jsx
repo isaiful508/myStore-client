@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import {AuthContext} from '../providers/AuthProvider';
+import {AuthContext} from '../providers/AuthProviders';
 import { Link, NavLink } from "react-router-dom";
 import { CiMenuBurger, CiMenuFries } from "react-icons/ci";
 import Loading from "./Loading";

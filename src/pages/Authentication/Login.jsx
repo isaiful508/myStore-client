@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { auth } from "../../firebase/firebase";
 import baseUrl from "../../hooks/useBaseUrl";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../providers/AuthProvider";
+import { AuthContext } from "../../providers/AuthProviders";
 import toast from "react-hot-toast";
 
 
