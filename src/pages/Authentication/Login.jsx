@@ -5,23 +5,38 @@ import toast from "react-hot-toast";
 
 
 const Login = () => {
-	const {signIn,
-        loginWithGoogle} = useContext(AuthContext);
-	const [loading, setLoading] = useState(false);
+	const {signIn,loginWithGoogle} = useContext(AuthContext);
 	const [user, setUser] = useState(null);
+	const [loginError, setLoginError] = useState("");
 	const location = useLocation()
 	const from = location.state?.from?.pathname || "/";
 	const navigate = useNavigate()
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(true)
 		const email = e.target.email.value
 		const password = e.target.password.value;
 		console.log(email, password);
 
-		
-	}
+		setLoginError("")
+
+        signIn(email, password)
+            .then((result) => {
+                const loggedInUser = result.user;
+                console.log(loggedInUser);
+                toast.success("Login Successfully");
+				navigate(location?.state ? location.state : '/')
+
+            })
+            .catch(error => {
+                console.error(error)
+
+                if (error.code === "auth/invalid-credential" || error.code === "auth/user-not-found") {
+                    // Show error message for incorrect email or password
+                    setLoginError("Incorrect email or password. Please try again.");
+                }
+			})
+		}
 
 	 // Google Signin
 	 const handleGoogleLogin = () => {
@@ -31,12 +46,9 @@ const Login = () => {
                 const googleUser = result.user
                 setUser(googleUser);
 				console.log(user);
-                toast.success("Login Successfully")
-
-                navigate(location?.state ? location.state : '/');
-              
-
-            })
+                toast.success("Login Successfully");
+				navigate(location?.state ? location.state : '/');
+               })
             .catch(error => console.error(error))
     }
 
@@ -73,14 +85,12 @@ const Login = () => {
 							<input required type="password" name="password" id="password" placeholder="*****" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600" />
 						</div>
 					</div>
-					{loading ? <div className="w-full px-8 py-3 font-semibold rounded-md dark:bg-violet-600 dark:text-gray-50">
-						<div className="w-6 h-6 m-auto border-4 border-dashed rounded-full animate-spin dark:border-white"></div>
-					</div> : <button
+					 <button
 						type="submit"
 						className="w-full px-8 py-3 font-semibold rounded-md dark:bg-violet-600 dark:text-gray-50"
 					>
 						Sign In
-					</button>}
+					</button>
 				</form>
 			</div>
 		</div>

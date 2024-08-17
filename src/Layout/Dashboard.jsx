@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import useSecureUrl from "./../hooks/useSecureUrl"
+// import useSecureUrl from "./../hooks/useSecureUrl"
 import toast from "react-hot-toast";
 import Loading from "./../components/Loading"
+import baseUrl from './../Hooks/UseBaseUrl';
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
     const [brandName, setBrandName] = useState("");
     const [categories, setCategories] = useState([]);
-    const secureBaseUrl = useSecureUrl();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const Dashboard = () => {
         };
 
         try {
-            const res = await secureBaseUrl.post('/products', newProduct)
+            const res = await baseUrl.post('/products', newProduct)
             console.log(res.data);
             if(res.data.acknowledged){
                 toast.success('Product updated successfully')

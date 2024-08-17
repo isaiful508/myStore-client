@@ -2,13 +2,22 @@ import { useContext, useEffect, useState } from "react"
 import {AuthContext} from '../providers/AuthProviders';
 import { Link, NavLink } from "react-router-dom";
 import { CiMenuBurger, CiMenuFries } from "react-icons/ci";
-import Loading from "./Loading";
 
 
 const Navbar = () => {
-  const {user, loading} = useContext(AuthContext)
+  const { user, logOut } = useContext(AuthContext);
   const [open, setOpen] = useState(false)
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
+
+  
+  const handleSignOut = () => {
+    logOut()
+        .then()
+        .catch(error => {
+            // Handle sign out error
+            console.error('Sign out error:', error);
+        });
+}
   
   useEffect(() => {
     fetch('/data.json')
@@ -18,7 +27,7 @@ const Navbar = () => {
         setCategories(data)
       });
   },[open])
-  console.log(categories)
+  // console.log(categories)
   
   const navLink = (
     <>
@@ -33,22 +42,19 @@ const Navbar = () => {
 
         <div className="flex items-center gap-2">
           <img className="h-8" src="/logo.png" alt="logo" />
-          <h1 className="text-xl font-semibold">Product Scope</h1>
+          <h1 className="text-xl font-semibold">My Store</h1>
         </div>
 
         <div className="flex items-center gap-5">
-          {loading && <Loading />}
-          {user?.name && !loading ? <div className="flex items-center gap-2">
-            Hi, {user?.name?.split(' ')[0]}
-            <img className="h-10 w-10 p-1 border-blue-500 border-2 rounded-full cursor-pointer" src={user?.photoUrl || "/logo.png"} title={user?.email} alt="user" />
-          </div> : !loading && <div className="flex items-center gap-2">
+        
+          {user? <button onClick={handleSignOut}>LogOut</button> :  <div className="flex items-center gap-2">
             <Link className="font-semibold px-4 py-2 rounded-md bg-green-500 hover:bg-white hover:text-green-500 text-white hover:border border-black" to="/login">Login</Link>
             <Link className="font-semibold px-4 py-2 rounded-md bg-green-500 hover:bg-white hover:text-green-500 text-white hover:border border-black" to="/signup">Signup</Link>
           </div>}
           
-          <div>
+          {/* <div>
             {open ? <CiMenuFries className="text-xl cursor-pointer" onClick={() => setOpen(!open)} /> : <CiMenuBurger className="text-xl cursor-pointer" onClick={() => setOpen(!open)} />}
-          </div>
+          </div> */}
         </div>
       </div>
 

@@ -48,7 +48,7 @@ const Land = () => {
     .catch((error) => console.log(error))
   },[filter, brandName, currentPage])
 
-  console.log(products)
+  // console.log(products)
 
   return (
     <div className="">

@@ -11,7 +11,7 @@ const SignUp = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const { createUser, signOut, loginWithGoogle } = useContext(AuthContext);
+  const { createUser, logOut, loginWithGoogle } = useContext(AuthContext);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
