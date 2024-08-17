@@ -1,0 +1,69 @@
+[
+    {
+        "brand_name": "Walton",
+        "categories": [
+            "Smartphones",
+            "Laptops",
+            "Tablets",
+            "Smart TVs",
+            "Refrigerators",
+            "Air Conditioners"
+        ]
+    },
+    {
+        "brand_name": "Minister",
+        "categories": [
+            "Microwave Ovens",
+            "Refrigerators",
+            "Washing Machines",
+            "Electric Cookers",
+            "Induction Cooktops",
+            "Air Fryers"
+        ]
+    },
+    {
+        "brand_name": "Singer Bangladesh",
+        "categories": [
+            "Televisions",
+            "Washing Machines",
+            "Microwave Ovens",
+            "Vacuum Cleaners",
+            "Electric Irons",
+            "Sewing Machines"
+        ]
+    },
+    {
+        "brand_name": "MyOne",
+        "categories": [
+            "Smart TVs",
+            "Home Theater Systems",
+            "Bluetooth Speakers",
+            "Refrigerators",
+            "Electric Kettles",
+            "Blenders"
+        ]
+    },
+    {
+        "brand_name": "Vision",
+        "categories": [
+            "Refrigerators",
+            "Microwave Ovens",
+            "Air Conditioners",
+            "Televisions",
+            "Fans",
+            "Washing Machines"
+        ]
+    },
+    {
+        "brand_name": "Samsung Bangladesh",
+        "categories": [
+            "Smartphones",
+            "Smart TVs",
+            "Tablets",
+            "Washing Machines",
+            "Refrigerators",
+            "Microwave Ovens"
+        ]
+    }
+  ]
+  
