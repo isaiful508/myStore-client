@@ -47,14 +47,11 @@ const Navbar = () => {
 
         <div className="flex items-center gap-5">
         
-          {user? <button onClick={handleSignOut}>LogOut</button> :  <div className="flex items-center gap-2">
+          {user? <button className="font-semibold px-4 py-2 rounded-md bg-green-500 hover:bg-white hover:text-green-500 text-white hover:border border-black" onClick={handleSignOut}>LogOut</button> :  <div className="flex items-center gap-2">
             <Link className="font-semibold px-4 py-2 rounded-md bg-green-500 hover:bg-white hover:text-green-500 text-white hover:border border-black" to="/login">Login</Link>
             <Link className="font-semibold px-4 py-2 rounded-md bg-green-500 hover:bg-white hover:text-green-500 text-white hover:border border-black" to="/signup">Signup</Link>
           </div>}
           
-          {/* <div>
-            {open ? <CiMenuFries className="text-xl cursor-pointer" onClick={() => setOpen(!open)} /> : <CiMenuBurger className="text-xl cursor-pointer" onClick={() => setOpen(!open)} />}
-          </div> */}
         </div>
       </div>
 
